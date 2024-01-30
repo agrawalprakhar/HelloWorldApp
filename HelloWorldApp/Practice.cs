@@ -9,7 +9,6 @@ using ContentType = MimeKit.ContentType;
 using MailKit.Security;
 using MailKit.Net.Smtp;
 using System.Net;
-using System.Net.Mail;
 
 namespace SMTPEmailService
 {
@@ -40,10 +39,7 @@ namespace SMTPEmailService
                 }
 
                 // Add BCC recipients if available
-                if (mail.BCC != null && mail.BCC.Any())
-                {
-                    mimeMessage.Bcc.AddRange(mail.BCC.Select(x => new MailboxAddress(x.Name, x.Email)));
-                }
+
 
                 mimeMessage.Subject = mail.Subject;
 
@@ -55,6 +51,11 @@ namespace SMTPEmailService
                 else
                 {
                     builder.TextBody = mail.Body;
+                }
+
+                if (mail.BCC != null && mail.BCC.Any())
+                {
+                    mimeMessage.Bcc.AddRange(mail.BCC.Select(x => new MailboxAddress(x.Name, x.Email)));
                 }
 
                 if (mail.Attachments != null && mail.Attachments.Any())
